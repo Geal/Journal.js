@@ -25,8 +25,9 @@
  */
 
 var log = {
-  div: true,
-  console: true,
+  div: false,
+  divid: 'log',
+  console: false,
   hasCallback: false,
   callbackfun: null
  }
@@ -36,12 +37,21 @@ log.setCallback = function(callback) {
   this.hasCallback = true;
 }
 
+log.setDiv = function(id) {
+  this.divid = id;
+  this.div = true;
+}
+
+log.setConsole = function() {
+  this.console = true;
+}
+
 log.print = function (text) {
   if(this.hasCallback) {
     this.callbackfun(text);
   }
   if(log.div) {
-    var logdiv = document.getElementById("log");
+    var logdiv = document.getElementById(this.divid);
     logdiv.innerHTML += text+"<br />";
   }
   if(log.console) {
