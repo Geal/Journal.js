@@ -1,6 +1,6 @@
 /*  
  * Journal.js: Mini logging framework
- * 
+ *
  * Copyright 2011 Geoffroy Couprie
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -27,11 +27,19 @@
 var log = {
   div: true,
   console: true,
-  callback: true,
+  hasCallback: false,
   callbackfun: null
  }
 
+log.setCallback = function(callback) {
+  this.callbackfun = callback;
+  this.hasCallback = true;
+}
+
 log.print = function (text) {
+  if(this.hasCallback) {
+    this.callbackfun(text);
+  }
   if(log.div) {
     var logdiv = document.getElementById("log");
     logdiv.innerHTML += text+"<br />";
