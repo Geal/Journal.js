@@ -29,7 +29,13 @@ var log = {
   divid: 'log',
   console: false,
   hasCallback: false,
-  callbackfun: null
+  callbackfun: null,
+  NONE: 0,
+  ERROR: 1,
+  WARN: 2,
+  INFO: 3,
+  DEBUG: 4,
+  loglevel: this.NONE
  }
 
 log.setCallback = function(callback) {
@@ -46,6 +52,10 @@ log.setConsole = function() {
   this.console = true;
 }
 
+log.setLogLevel = function(level) {
+  this.loglevel = level;
+}
+
 log.print = function (text) {
   if(this.hasCallback) {
     this.callbackfun(text);
@@ -60,17 +70,21 @@ log.print = function (text) {
 }
 
 log.info = function (text) {
-  this.print("[INFO ] "+text);
+  if(this.loglevel >= this.INFO)
+    this.print("[INFO ] "+text);
 }
 
 log.error = function (text) {
-  this.print("[ERROR] "+text);
+  if(this.loglevel >= this.ERROR)
+    this.print("[ERROR] "+text);
 }
 
 log.warn = function (text) {
-  this.print("[WARN ] "+text);
+  if(this.loglevel >= this.WARN)
+    this.print("[WARN ] "+text);
 }
 
 log.debug = function (text) {
-  this.print("[DEBUG] "+text);
+  if(this.loglevel >= this.DEBUG)
+    this.print("[DEBUG] "+text);
 }
