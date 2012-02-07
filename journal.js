@@ -56,6 +56,11 @@ log.setLogLevel = function(level) {
   this.loglevel = level;
 }
 
+function appendToConsole( message ) {
+  throw new Error( message );
+};
+
+
 log.print = function (text) {
   if(this.hasCallback) {
     this.callbackfun(text);
@@ -64,9 +69,19 @@ log.print = function (text) {
     var logdiv = document.getElementById(this.divid);
     logdiv.innerHTML += text+"<br />";
   }
-  if(log.console) {
-    console.log(text);
-  }
+  if (log.console) {
+		if( console ) {
+			// Logging to browser console. 
+			console.log(text);
+		}
+		else {
+			// Workaround for browsers not exposing "console" object.
+			function doLogToConsole() {
+				appendToConsole( text );
+			}
+			setTimeout( doLogToConsole, 1 );			
+		}
+	}	
 }
 
 log.info = function (text) {
