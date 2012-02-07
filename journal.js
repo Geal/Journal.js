@@ -48,9 +48,9 @@ log.setDiv = function(id) {
   this.div = true;
 }
 
-log.setConsole = function() {
-  this.console = true;
-}
+log.setConsole = function( active ) {
+  this.console = active;
+};
 
 log.setLogLevel = function(level) {
   this.loglevel = level;
