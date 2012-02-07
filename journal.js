@@ -48,13 +48,18 @@ log.setDiv = function(id) {
   this.div = true;
 }
 
-log.setConsole = function() {
-  this.console = true;
-}
+log.setConsole = function( active ) {
+  this.console = active;
+};
 
 log.setLogLevel = function(level) {
   this.loglevel = level;
 }
+
+function appendToConsole( message ) {
+  throw new Error( message );
+};
+
 
 log.print = function (text) {
   if(this.hasCallback) {
@@ -64,9 +69,19 @@ log.print = function (text) {
     var logdiv = document.getElementById(this.divid);
     logdiv.innerHTML += text+"<br />";
   }
-  if(log.console) {
-    console.log(text);
-  }
+  if (log.console) {
+		if( console ) {
+			// Logging to browser console. 
+			console.log(text);
+		}
+		else {
+			// Workaround for browsers not exposing "console" object.
+			function doLogToConsole() {
+				appendToConsole( text );
+			}
+			setTimeout( doLogToConsole, 1 );			
+		}
+	}	
 }
 
 log.info = function (text) {
